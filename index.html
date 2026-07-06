@@ -66,6 +66,35 @@
         margin: 0 0 4px;
         line-height: 1.25;
       }
+      .authors {
+        max-width: 640px;
+        margin: 0 0 40px;
+      }
+      .author-list {
+        font-size: 16px;
+        line-height: 1.5;
+        color: var(--ink);
+        margin: 0 0 12px;
+      }
+      .author-list sup,
+      .affiliation sup {
+        color: var(--teal-deep);
+        font-weight: 600;
+        padding: 0 1px;
+      }
+      .affiliation {
+        font-size: 13.5px;
+        line-height: 1.45;
+        color: var(--ink-soft);
+        margin: 2px 0;
+      }
+      .emails {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12.5px;
+        color: var(--ink-soft);
+        margin: 14px 0 0;
+        word-break: break-word;
+      }
       nav.toc .sub {
         font-size: 13px;
         color: var(--ink-soft);
@@ -485,15 +514,26 @@
             A Comparative Study of RAG versus Fine Tuning for Answering
             Aerospace Military Doctrinal and Regulatory Questions
           </h1>
-          <h3>
-            Kalia González(1), Juan Diego Ortega-Medina (1), Nicolás Díaz(1),
-            Mario Linares-Vásquez(1), Ruben Manrique(1), Alexandra
-            Zabala-López(2) 1Systems and Computing Engineering Department,
-            Universidad de los Andes, Colombia 2Fuerza Aeroespacial Colombiana,
-            Grupo de Investigaci´on en Estudios Aeroespaciales GIEA, Colombia
-            {k.gonzalezj, j.ortegam, n.diaz9, m.linaresv,
-            rf.manrique}@uniandes.edu.co, alexandra.zabala@fac.mil.co
-          </h3>
+          <div class="authors">
+            <p class="author-list">
+              Kalia González<sup>1</sup>, Juan Diego Ortega-Medina<sup>1</sup>,
+              Nicolás Díaz<sup>1</sup>, Mario Linares-Vásquez<sup>1</sup>, Ruben
+              Manrique<sup>1</sup>, Alexandra Zabala-López<sup>2</sup>
+            </p>
+            <p class="affiliation">
+              <sup>1</sup>Systems and Computing Engineering Department,
+              Universidad de los Andes, Colombia
+            </p>
+            <p class="affiliation">
+              <sup>2</sup>Fuerza Aeroespacial Colombiana, Grupo de Investigación
+              en Estudios Aeroespaciales (GIEA), Colombia
+            </p>
+            <p class="emails">
+              {k.gonzalezj, j.ortegam, n.diaz9, m.linaresv,
+              rf.manrique}@uniandes.edu.co<br />
+              alexandra.zabala@fac.mil.co
+            </p>
+          </div>
           <p>
             This page accompanies the article and gathers, in a single place,
             the 13 metrics used to compare the four evaluated models. Each chart
