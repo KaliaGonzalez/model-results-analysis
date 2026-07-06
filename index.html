@@ -1,496 +1,744 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analysis of Results Across Models</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --paper:#EDEFE8;
-    --paper-deep:#E4E7DD;
-    --ink:#1F2A24;
-    --ink-soft:#4C574F;
-    --line:#CBD1C2;
-    --teal:#2F6F62;
-    --teal-deep:#1E4A41;
-    --gold:#B98A32;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Source Serif 4', serif;
-    line-height:1.55;
-  }
-  .mono{font-family:'IBM Plex Mono', monospace;}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analysis of Results Across Models</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #edefe8;
+        --paper-deep: #e4e7dd;
+        --ink: #1f2a24;
+        --ink-soft: #4c574f;
+        --line: #cbd1c2;
+        --teal: #2f6f62;
+        --teal-deep: #1e4a41;
+        --gold: #b98a32;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Source Serif 4", serif;
+        line-height: 1.55;
+      }
+      .mono {
+        font-family: "IBM Plex Mono", monospace;
+      }
 
-  /* ---------- layout ---------- */
-  .shell{
-    display:grid;
-    grid-template-columns:250px 1fr;
-    max-width:1280px;
-    margin:0 auto;
-  }
-  nav.toc{
-    position:sticky;
-    top:0;
-    align-self:start;
-    height:100vh;
-    overflow-y:auto;
-    padding:38px 20px 40px 32px;
-    border-right:1px solid var(--line);
-  }
-  nav.toc .tag{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    margin-bottom:6px;
-  }
-  nav.toc h1{
-    font-size:19px;
-    margin:0 0 4px;
-    line-height:1.25;
-  }
-  nav.toc .sub{
-    font-size:13px;
-    color:var(--ink-soft);
-    margin-bottom:26px;
-  }
-  nav.toc .grp{
-    margin-bottom:22px;
-  }
-  nav.toc .grp-title{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color:var(--teal-deep);
-    border-bottom:1px solid var(--line);
-    padding-bottom:5px;
-    margin-bottom:8px;
-  }
-  nav.toc a{
-    display:block;
-    font-size:14.5px;
-    color:var(--ink);
-    text-decoration:none;
-    padding:4px 0;
-    border-left:2px solid transparent;
-    padding-left:8px;
-    margin-left:-10px;
-    transition:border-color .15s, color .15s;
-  }
-  nav.toc a:hover{
-    border-left:2px solid var(--teal);
-    color:var(--teal);
-  }
+      /* ---------- layout ---------- */
+      .shell {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+      nav.toc {
+        position: sticky;
+        top: 0;
+        align-self: start;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 38px 20px 40px 32px;
+        border-right: 1px solid var(--line);
+      }
+      nav.toc .tag {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 6px;
+      }
+      nav.toc h1 {
+        font-size: 19px;
+        margin: 0 0 4px;
+        line-height: 1.25;
+      }
+      nav.toc .sub {
+        font-size: 13px;
+        color: var(--ink-soft);
+        margin-bottom: 26px;
+      }
+      nav.toc .grp {
+        margin-bottom: 22px;
+      }
+      nav.toc .grp-title {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--teal-deep);
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 5px;
+        margin-bottom: 8px;
+      }
+      nav.toc a {
+        display: block;
+        font-size: 14.5px;
+        color: var(--ink);
+        text-decoration: none;
+        padding: 4px 0;
+        border-left: 2px solid transparent;
+        padding-left: 8px;
+        margin-left: -10px;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
+      }
+      nav.toc a:hover {
+        border-left: 2px solid var(--teal);
+        color: var(--teal);
+      }
 
-  main{padding:56px 60px 120px 56px;}
+      main {
+        padding: 56px 60px 120px 56px;
+      }
 
-  /* ---------- header ---------- */
-  header.hero{
-    max-width:760px;
-    margin-bottom:64px;
-    padding-bottom:36px;
-    border-bottom:2px solid var(--ink);
-    position:relative;
-  }
-  header.hero .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px;
-    letter-spacing:.15em;
-    text-transform:uppercase;
-    color:var(--teal-deep);
-    margin-bottom:14px;
-  }
-  header.hero h2{
-    font-size:44px;
-    margin:0 0 18px;
-    line-height:1.08;
-    font-weight:700;
-  }
-  header.hero p{
-    font-size:17px;
-    color:var(--ink-soft);
-    max-width:640px;
-  }
+      /* ---------- header ---------- */
+      header.hero {
+        max-width: 760px;
+        margin-bottom: 64px;
+        padding-bottom: 36px;
+        border-bottom: 2px solid var(--ink);
+        position: relative;
+      }
+      header.hero .eyebrow {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--teal-deep);
+        margin-bottom: 14px;
+      }
+      header.hero h2 {
+        font-size: 44px;
+        margin: 0 0 18px;
+        line-height: 1.08;
+        font-weight: 700;
+      }
+      header.hero p {
+        font-size: 17px;
+        color: var(--ink-soft);
+        max-width: 640px;
+      }
 
-  /* legend cards */
-  .legend-wrap{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:28px;
-    max-width:900px;
-    margin-bottom:70px;
-  }
-  .legend-card{
-    background:var(--paper-deep);
-    border:1px solid var(--line);
-    padding:20px 22px;
-  }
-  .legend-card h3{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color:var(--teal-deep);
-    margin:0 0 12px;
-  }
-  .legend-card ul{margin:0;padding:0;list-style:none;}
-  .legend-card li{
-    font-size:14.5px;
-    padding:5px 0;
-    display:flex;
-    gap:10px;
-    align-items:baseline;
-  }
-  .swatch{
-    width:12px;height:12px;border-radius:2px;flex:none;
-    display:inline-block;
-  }
-  .s-blue{background:#4C7FC1;} .s-orange{background:#DD8452;}
-  .s-green{background:#3E9C75;} .s-purple{background:#8172B2;}
+      /* legend cards */
+      .legend-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        max-width: 900px;
+        margin-bottom: 70px;
+      }
+      .legend-card {
+        background: var(--paper-deep);
+        border: 1px solid var(--line);
+        padding: 20px 22px;
+      }
+      .legend-card h3 {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--teal-deep);
+        margin: 0 0 12px;
+      }
+      .legend-card ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .legend-card li {
+        font-size: 14.5px;
+        padding: 5px 0;
+        display: flex;
+        gap: 10px;
+        align-items: baseline;
+      }
+      .swatch {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+        flex: none;
+        display: inline-block;
+      }
+      .s-blue {
+        background: #4c7fc1;
+      }
+      .s-orange {
+        background: #dd8452;
+      }
+      .s-green {
+        background: #3e9c75;
+      }
+      .s-purple {
+        background: #8172b2;
+      }
 
-  .legend-card.categories li{display:block;}
-  .legend-card.categories b{color:var(--ink);}
+      .legend-card.categories li {
+        display: block;
+      }
+      .legend-card.categories b {
+        color: var(--ink);
+      }
 
-  /* ---------- group intro ---------- */
-  .group-block{margin-bottom:88px;}
-  .group-head{
-    display:flex;
-    align-items:baseline;
-    gap:16px;
-    margin-bottom:8px;
-    border-bottom:1px solid var(--ink);
-    padding-bottom:10px;
-  }
-  .group-head .idx{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:13px;
-    color:var(--teal-deep);
-  }
-  .group-head h2{
-    font-size:28px;
-    margin:0;
-  }
-  .group-intro{
-    max-width:720px;
-    color:var(--ink-soft);
-    font-size:15.5px;
-    margin:14px 0 40px;
-  }
+      /* ---------- group intro ---------- */
+      .group-block {
+        margin-bottom: 88px;
+      }
+      .group-head {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        margin-bottom: 8px;
+        border-bottom: 1px solid var(--ink);
+        padding-bottom: 10px;
+      }
+      .group-head .idx {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        color: var(--teal-deep);
+      }
+      .group-head h2 {
+        font-size: 28px;
+        margin: 0;
+      }
+      .group-intro {
+        max-width: 720px;
+        color: var(--ink-soft);
+        font-size: 15.5px;
+        margin: 14px 0 40px;
+      }
 
-  /* ---------- metric card ---------- */
-  .metric{
-    display:grid;
-    grid-template-columns:1.1fr 0.9fr;
-    gap:36px;
-    padding:32px 0;
-    border-bottom:1px solid var(--line);
-    align-items:start;
-  }
-  .metric:last-child{border-bottom:none;}
-  .metric figure{margin:0;}
-  .metric img{
-    width:100%;
-    border:1px solid var(--line);
-    background:#fff;
-    display:block;
-  }
-  .metric .figcap{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11.5px;
-    color:var(--ink-soft);
-    margin-top:8px;
-  }
-  .metric .body h3{
-    font-size:22px;
-    margin:0 0 4px;
-  }
-  .metric .body .metric-code{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px;
-    color:var(--teal-deep);
-    display:block;
-    margin-bottom:14px;
-  }
-  .metric .body p{
-    font-size:15px;
-    color:var(--ink-soft);
-    margin:0 0 14px;
-  }
+      /* ---------- metric card ---------- */
+      .metric {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 36px;
+        padding: 32px 0;
+        border-bottom: 1px solid var(--line);
+        align-items: start;
+      }
+      .metric:last-child {
+        border-bottom: none;
+      }
+      .metric figure {
+        margin: 0;
+      }
+      .metric img {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: #fff;
+        display: block;
+      }
+      .metric .figcap {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11.5px;
+        color: var(--ink-soft);
+        margin-top: 8px;
+      }
+      .metric .body h3 {
+        font-size: 22px;
+        margin: 0 0 4px;
+      }
+      .metric .body .metric-code {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        color: var(--teal-deep);
+        display: block;
+        margin-bottom: 14px;
+      }
+      .metric .body p {
+        font-size: 15px;
+        color: var(--ink-soft);
+        margin: 0 0 14px;
+      }
 
-  @media (max-width:960px){
-    .shell{grid-template-columns:1fr;}
-    nav.toc{position:relative;height:auto;border-right:none;border-bottom:1px solid var(--line);}
-    main{padding:40px 24px 100px;}
-    .metric{grid-template-columns:1fr;}
-    .legend-wrap{grid-template-columns:1fr;}
-  }
-</style>
-</head>
-<body>
-<div class="shell">
+      @media (max-width: 960px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+        nav.toc {
+          position: relative;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+        }
+        main {
+          padding: 40px 24px 100px;
+        }
+        .metric {
+          grid-template-columns: 1fr;
+        }
+        .legend-wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav class="toc">
+        <div class="tag">Supplementary material</div>
+        <h1>Analysis of Results Across Models</h1>
+        <div class="sub">Per-metric results notebook</div>
 
-  <nav class="toc">
-    <div class="tag">Supplementary material</div>
-    <h1>Analysis of Results Across Models</h1>
-    <div class="sub">Per-metric results notebook</div>
+        <div class="grp">
+          <div class="grp-title">Lexical overlap</div>
+          <a href="#bleu-1">BLEU-1</a>
+          <a href="#bleu-2">BLEU-2</a>
+          <a href="#bleu-4">BLEU-4</a>
+          <a href="#rouge-1">ROUGE-1</a>
+          <a href="#rouge-2">ROUGE-2</a>
+          <a href="#rouge-l">ROUGE-L</a>
+          <a href="#meteor">METEOR</a>
+          <a href="#token-overlap">Token Overlap</a>
+        </div>
 
-    <div class="grp">
-      <div class="grp-title">Lexical overlap</div>
-      <a href="#bleu-1">BLEU-1</a>
-      <a href="#bleu-2">BLEU-2</a>
-      <a href="#bleu-4">BLEU-4</a>
-      <a href="#rouge-1">ROUGE-1</a>
-      <a href="#rouge-2">ROUGE-2</a>
-      <a href="#rouge-l">ROUGE-L</a>
-      <a href="#meteor">METEOR</a>
-      <a href="#token-overlap">Token Overlap</a>
+        <div class="grp">
+          <div class="grp-title">Semantic similarity</div>
+          <a href="#bert-f1">BERTScore-F1</a>
+          <a href="#bert-p">BERTScore-P</a>
+          <a href="#bert-r">BERTScore-R</a>
+          <a href="#semantic-sim">Semantic Similarity</a>
+        </div>
+
+        <div class="grp">
+          <div class="grp-title">Efficiency</div>
+          <a href="#response-time">Response time</a>
+        </div>
+      </nav>
+
+      <main>
+        <header class="hero">
+          <div class="eyebrow">Metrics appendix</div>
+          <h2>Analysis of Results Across Models</h2>
+          <p>
+            This page accompanies the article and gathers, in a single place,
+            the 13 metrics used to compare the four evaluated models. Each chart
+            is a box plot showing the distribution of results per document
+            category. Below each figure is a short reading of what can be
+            observed — not a statistical verdict, but a guide to interpreting
+            the plot.
+          </p>
+        </header>
+
+        <section class="legend-wrap">
+          <div class="legend-card">
+            <h3>Compared models</h3>
+            <ul>
+              <li><span class="swatch s-blue"></span> Gemma3-12b</li>
+              <li><span class="swatch s-orange"></span> Granite4-3b</li>
+              <li><span class="swatch s-green"></span> Qwen3-14b</li>
+              <li>
+                <span class="swatch s-purple"></span> Qwen2.5-14b FT
+                (instruction-tuned)
+              </li>
+            </ul>
+          </div>
+          <div class="legend-card categories">
+            <h3>Document categories</h3>
+            <ul>
+              <li>
+                <b>EDAES</b> · <b>MATER</b> · <b>PORFAC</b> · <b>GUTER</b> ·
+                <b>HISTORIA</b> — five document sources over which the summaries
+                were generated and evaluated. In every chart they appear as the
+                five groups of boxes along the horizontal axis.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ============ GROUP 1: LEXICAL ============ -->
+        <section class="group-block">
+          <div class="group-head">
+            <span class="idx">01</span>
+            <h2>Lexical overlap</h2>
+          </div>
+          <p class="group-intro">
+            These metrics compare words and word sequences (n-grams) between the
+            generated summary and the reference summary. They reward literal
+            matches, so they penalize a model that says the same thing using
+            different words.
+          </p>
+
+          <div class="metric" id="bleu-1">
+            <figure>
+              <img
+                src="images/box_BLEU-1.png"
+                alt="Box plot of BLEU-1 by document category and model"
+              />
+              <div class="figcap">Fig. 1 — BLEU-1 by category and model</div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">BLEU-1</span>
+              <h3>Single-word matching</h3>
+              <p>
+                Measures what proportion of individual words in the generated
+                summary also appear in the reference. It is the most permissive
+                BLEU variant, since it requires neither order nor contiguity.
+              </p>
+              <p>
+                In EDAES and MATER, Qwen2.5-14b FT falls well below the other
+                three models, with boxes compressed near zero. In PORFAC, GUTER
+                and HISTORIA the gap narrows and its boxes move closer to the
+                rest.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="bleu-2">
+            <figure>
+              <img
+                src="images/box_BLEU-2.png"
+                alt="Box plot of BLEU-2 by document category and model"
+              />
+              <div class="figcap">Fig. 2 — BLEU-2 by category and model</div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">BLEU-2</span>
+              <h3>Word-pair matching</h3>
+              <p>
+                Same as BLEU-1 but requires bigrams (consecutive word pairs) to
+                match, which makes it more sensitive to order and exact
+                phrasing.
+              </p>
+              <p>
+                The pattern holds: Qwen3-14b tends toward the highest medians in
+                EDAES and GUTER, while Qwen2.5-14b FT shows the lowest and
+                narrowest boxes in almost every category, with the partial
+                exception of HISTORIA.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="bleu-4">
+            <figure>
+              <img
+                src="images/box_BLEU-4.png"
+                alt="Box plot of BLEU-4 by document category and model"
+              />
+              <div class="figcap">Fig. 3 — BLEU-4 by category and model</div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">BLEU-4</span>
+              <h3>Four-word sequence matching</h3>
+              <p>
+                The strictest BLEU variant: it requires matches of four
+                consecutive words. Low values are normal even for good-quality
+                summaries, because few sentences repeat word for word.
+              </p>
+              <p>
+                All models sit at modest values (medians between 0.05 and 0.20),
+                which is expected given how demanding the metric is. GUTER is
+                the category where the models separate the most, with Gemma3-12b
+                leading.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="rouge-1">
+            <figure>
+              <img
+                src="images/box_ROUGE-1.png"
+                alt="Box plot of ROUGE-1 by document category and model"
+              />
+              <div class="figcap">Fig. 4 — ROUGE-1 by category and model</div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">ROUGE-1</span>
+              <h3>Single-word recall</h3>
+              <p>
+                Unlike BLEU, ROUGE is recall-oriented: it measures how much of
+                the reference content the generated summary manages to recover,
+                word by word.
+              </p>
+              <p>
+                Gemma3-12b, Granite4-3b and Qwen3-14b move within similar ranges
+                (medians ~0.25–0.49 depending on category). Qwen2.5-14b FT stays
+                consistently below in EDAES, MATER, PORFAC and GUTER, but in
+                HISTORIA its box fully overlaps with those of the other models.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="rouge-2">
+            <figure>
+              <img
+                src="images/box_ROUGE-2.png"
+                alt="Box plot of ROUGE-2 by document category and model"
+              />
+              <div class="figcap">Fig. 5 — ROUGE-2 by category and model</div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">ROUGE-2</span>
+              <h3>Word-pair recall</h3>
+              <p>
+                A bigram-based version of ROUGE; more demanding than ROUGE-1
+                because it requires the local word order to be preserved.
+              </p>
+              <p>
+                This is the metric where the difference between Qwen2.5-14b FT
+                and the rest is most pronounced in relative terms: its boxes are
+                compressed near zero across all five categories, including
+                HISTORIA.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="rouge-l">
+            <figure>
+              <img
+                src="images/box_ROUGE-L.png"
+                alt="Box plot of ROUGE-L by document category and model"
+              />
+              <div class="figcap">Fig. 6 — ROUGE-L by category and model</div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">ROUGE-L</span>
+              <h3>Longest common subsequence</h3>
+              <p>
+                Based on the longest common subsequence between summary and
+                reference, capturing structural similarity without requiring the
+                words to be strictly consecutive.
+              </p>
+              <p>
+                Its behavior is intermediate between ROUGE-1 and ROUGE-2:
+                Qwen2.5-14b FT still trails the rest in most categories, but in
+                HISTORIA its values are comparable and its median even exceeds
+                that of Granite4-3b.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="meteor">
+            <figure>
+              <img
+                src="images/box_METEOR.png"
+                alt="Box plot of METEOR by document category and model"
+              />
+              <div class="figcap">Fig. 7 — METEOR by category and model</div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">METEOR</span>
+              <h3>Lexical matching with synonyms and stems</h3>
+              <p>
+                METEOR relaxes exact matching by also considering synonyms and
+                derived word forms, in addition to penalizing fragmentation of
+                word order.
+              </p>
+              <p>
+                GUTER concentrates the highest values for all models (medians
+                from 0.5 to 0.68), while MATER and PORFAC are more demanding.
+                Qwen2.5-14b FT stays below the rest in all five categories,
+                although the distance shrinks in HISTORIA.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="token-overlap">
+            <figure>
+              <img
+                src="images/box_TokenOverlap.png"
+                alt="Box plot of Token Overlap by document category and model"
+              />
+              <div class="figcap">
+                Fig. 8 — Token Overlap by category and model
+              </div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">Token Overlap</span>
+              <h3>Raw proportion of shared tokens</h3>
+              <p>
+                A simple overlap measure: what fraction of tokens in the
+                generated summary also appears in the reference, without
+                weighting by order or frequency.
+              </p>
+              <p>
+                GUTER is again the category with the highest overlap for the
+                three base models. Qwen2.5-14b FT shows narrower and lower boxes
+                across all categories, with the exception of HISTORIA, where its
+                median approaches that of Qwen3-14b.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ GROUP 2: SEMANTIC ============ -->
+        <section class="group-block">
+          <div class="group-head">
+            <span class="idx">02</span>
+            <h2>Semantic similarity</h2>
+          </div>
+          <p class="group-intro">
+            Unlike the previous group, these metrics compare meaning rather than
+            exact words, using vector representations (embeddings). A summary
+            can fully paraphrase the reference and still score high.
+          </p>
+
+          <div class="metric" id="bert-f1">
+            <figure>
+              <img
+                src="images/box_BERT-F1.png"
+                alt="Box plot of BERTScore-F1 by document category and model"
+              />
+              <div class="figcap">
+                Fig. 9 — BERTScore-F1 by category and model
+              </div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">BERTScore-F1</span>
+              <h3>Balance between semantic precision and recall</h3>
+              <p>
+                Combines precision and recall computed over contextual
+                embeddings, giving a single semantic-similarity score between
+                summary and reference.
+              </p>
+              <p>
+                Here the story changes relative to the lexical group: in
+                HISTORIA, Qwen2.5-14b FT reaches the highest median of the four
+                models (~0.74), and in the remaining categories its box overlaps
+                considerably with those of the base models, although starting
+                from a lower position in EDAES.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="bert-p">
+            <figure>
+              <img
+                src="images/box_BERT-P.png"
+                alt="Box plot of BERTScore-P by document category and model"
+              />
+              <div class="figcap">
+                Fig. 10 — BERTScore-P by category and model
+              </div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">BERTScore-P</span>
+              <h3>Semantic precision</h3>
+              <p>
+                Measures how much of the generated content has semantic support
+                in the reference: it penalizes "invented" or irrelevant content,
+                even if it is well written.
+              </p>
+              <p>
+                Gemma3-12b tends toward the highest precision medians in EDAES
+                and GUTER. Qwen2.5-14b FT is competitive in PORFAC, GUTER and
+                HISTORIA, and in the latter category it even surpasses the
+                median of the other models.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="bert-r">
+            <figure>
+              <img
+                src="images/box_BERT-R.png"
+                alt="Box plot of BERTScore-R by document category and model"
+              />
+              <div class="figcap">
+                Fig. 11 — BERTScore-R by category and model
+              </div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">BERTScore-R</span>
+              <h3>Semantic recall</h3>
+              <p>
+                Complements precision: it measures how much of the reference's
+                semantic content the generated summary manages to cover, even if
+                it uses different words.
+              </p>
+              <p>
+                GUTER concentrates the highest recall values for all models.
+                Qwen2.5-14b FT starts lower in EDAES and MATER, but in HISTORIA
+                its distribution is comparable to those of Gemma3-12b and
+                Granite4-3b.
+              </p>
+            </div>
+          </div>
+
+          <div class="metric" id="semantic-sim">
+            <figure>
+              <img
+                src="images/box_SemanticSim.png"
+                alt="Box plot of Semantic Similarity by document category and model"
+              />
+              <div class="figcap">
+                Fig. 12 — Semantic similarity (embeddings) by category and model
+              </div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">Semantic Similarity</span>
+              <h3>Full-sentence embedding similarity</h3>
+              <p>
+                Cosine similarity between the embedding of the full summary and
+                that of the reference; unlike BERTScore, it compares the text as
+                a single unit rather than token by token.
+              </p>
+              <p>
+                EDAES shows the highest and most consistent values for all four
+                models (medians above 0.85 for the three base models). MATER
+                presents the widest spread in the whole figure, with very tall
+                boxes across all models. Qwen2.5-14b FT stays somewhat below the
+                rest in almost every category, except GUTER, where it comes
+                fairly close.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ GROUP 3: EFFICIENCY ============ -->
+        <section class="group-block">
+          <div class="group-head">
+            <span class="idx">03</span>
+            <h2>Efficiency</h2>
+          </div>
+          <p class="group-intro">
+            Summary quality is only half the story: this section looks at how
+            long each model takes to generate a response.
+          </p>
+
+          <div class="metric" id="response-time">
+            <figure>
+              <img
+                src="images/box_Tiempo_Promedio_s.png"
+                alt="Box plot of response time in seconds by document category and model"
+              />
+              <div class="figcap">
+                Fig. 13 — Response time (s) by category and model
+              </div>
+            </figure>
+            <div class="body">
+              <span class="metric-code">Response time (s)</span>
+              <h3>Generation time per summary</h3>
+              <p>
+                Seconds each model takes to produce a complete summary, measured
+                by document category.
+              </p>
+              <p>
+                The difference here is the sharpest of the whole set: Gemma3-12b
+                and Granite4-3b respond in under two seconds across all
+                categories, Qwen3-14b sits in a moderate range (~4–6 seconds),
+                and Qwen2.5-14b FT needs between 20 and 30 seconds on average —
+                an order of magnitude slower than the base models.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
-
-    <div class="grp">
-      <div class="grp-title">Semantic similarity</div>
-      <a href="#bert-f1">BERTScore-F1</a>
-      <a href="#bert-p">BERTScore-P</a>
-      <a href="#bert-r">BERTScore-R</a>
-      <a href="#semantic-sim">Semantic Similarity</a>
-    </div>
-
-    <div class="grp">
-      <div class="grp-title">Efficiency</div>
-      <a href="#response-time">Response time</a>
-    </div>
-  </nav>
-
-  <main>
-    <header class="hero">
-      <div class="eyebrow">Metrics appendix · Spanish summary generation</div>
-      <h2>Analysis of Results Across Models</h2>
-      <p>This page accompanies the article and gathers, in a single place, the 13 metrics used to compare the four evaluated models. Each chart is a box plot showing the distribution of results per document category. Below each figure is a short reading of what can be observed — not a statistical verdict, but a guide to interpreting the plot.</p>
-    </header>
-
-    <section class="legend-wrap">
-      <div class="legend-card">
-        <h3>Compared models</h3>
-        <ul>
-          <li><span class="swatch s-blue"></span> Gemma3-12b</li>
-          <li><span class="swatch s-orange"></span> Granite4-3b</li>
-          <li><span class="swatch s-green"></span> Qwen3-14b</li>
-          <li><span class="swatch s-purple"></span> Qwen2.5-14b FT (instruction-tuned)</li>
-        </ul>
-      </div>
-      <div class="legend-card categories">
-        <h3>Document categories</h3>
-        <ul>
-          <li><b>EDAES</b> · <b>MATER</b> · <b>PORFAC</b> · <b>GUTER</b> · <b>HISTORIA</b> — five document sources over which the summaries were generated and evaluated. In every chart they appear as the five groups of boxes along the horizontal axis.</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ============ GROUP 1: LEXICAL ============ -->
-    <section class="group-block">
-      <div class="group-head">
-        <span class="idx">01</span>
-        <h2>Lexical overlap</h2>
-      </div>
-      <p class="group-intro">These metrics compare words and word sequences (n-grams) between the generated summary and the reference summary. They reward literal matches, so they penalize a model that says the same thing using different words.</p>
-
-      <div class="metric" id="bleu-1">
-        <figure>
-          <img src="images/box_BLEU-1.png" alt="Box plot of BLEU-1 by document category and model">
-          <div class="figcap">Fig. 1 — BLEU-1 by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">BLEU-1</span>
-          <h3>Single-word matching</h3>
-          <p>Measures what proportion of individual words in the generated summary also appear in the reference. It is the most permissive BLEU variant, since it requires neither order nor contiguity.</p>
-          <p>In EDAES and MATER, Qwen2.5-14b FT falls well below the other three models, with boxes compressed near zero. In PORFAC, GUTER and HISTORIA the gap narrows and its boxes move closer to the rest.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="bleu-2">
-        <figure>
-          <img src="images/box_BLEU-2.png" alt="Box plot of BLEU-2 by document category and model">
-          <div class="figcap">Fig. 2 — BLEU-2 by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">BLEU-2</span>
-          <h3>Word-pair matching</h3>
-          <p>Same as BLEU-1 but requires bigrams (consecutive word pairs) to match, which makes it more sensitive to order and exact phrasing.</p>
-          <p>The pattern holds: Qwen3-14b tends toward the highest medians in EDAES and GUTER, while Qwen2.5-14b FT shows the lowest and narrowest boxes in almost every category, with the partial exception of HISTORIA.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="bleu-4">
-        <figure>
-          <img src="images/box_BLEU-4.png" alt="Box plot of BLEU-4 by document category and model">
-          <div class="figcap">Fig. 3 — BLEU-4 by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">BLEU-4</span>
-          <h3>Four-word sequence matching</h3>
-          <p>The strictest BLEU variant: it requires matches of four consecutive words. Low values are normal even for good-quality summaries, because few sentences repeat word for word.</p>
-          <p>All models sit at modest values (medians between 0.05 and 0.20), which is expected given how demanding the metric is. GUTER is the category where the models separate the most, with Gemma3-12b leading.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="rouge-1">
-        <figure>
-          <img src="images/box_ROUGE-1.png" alt="Box plot of ROUGE-1 by document category and model">
-          <div class="figcap">Fig. 4 — ROUGE-1 by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">ROUGE-1</span>
-          <h3>Single-word recall</h3>
-          <p>Unlike BLEU, ROUGE is recall-oriented: it measures how much of the reference content the generated summary manages to recover, word by word.</p>
-          <p>Gemma3-12b, Granite4-3b and Qwen3-14b move within similar ranges (medians ~0.25–0.49 depending on category). Qwen2.5-14b FT stays consistently below in EDAES, MATER, PORFAC and GUTER, but in HISTORIA its box fully overlaps with those of the other models.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="rouge-2">
-        <figure>
-          <img src="images/box_ROUGE-2.png" alt="Box plot of ROUGE-2 by document category and model">
-          <div class="figcap">Fig. 5 — ROUGE-2 by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">ROUGE-2</span>
-          <h3>Word-pair recall</h3>
-          <p>A bigram-based version of ROUGE; more demanding than ROUGE-1 because it requires the local word order to be preserved.</p>
-          <p>This is the metric where the difference between Qwen2.5-14b FT and the rest is most pronounced in relative terms: its boxes are compressed near zero across all five categories, including HISTORIA.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="rouge-l">
-        <figure>
-          <img src="images/box_ROUGE-L.png" alt="Box plot of ROUGE-L by document category and model">
-          <div class="figcap">Fig. 6 — ROUGE-L by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">ROUGE-L</span>
-          <h3>Longest common subsequence</h3>
-          <p>Based on the longest common subsequence between summary and reference, capturing structural similarity without requiring the words to be strictly consecutive.</p>
-          <p>Its behavior is intermediate between ROUGE-1 and ROUGE-2: Qwen2.5-14b FT still trails the rest in most categories, but in HISTORIA its values are comparable and its median even exceeds that of Granite4-3b.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="meteor">
-        <figure>
-          <img src="images/box_METEOR.png" alt="Box plot of METEOR by document category and model">
-          <div class="figcap">Fig. 7 — METEOR by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">METEOR</span>
-          <h3>Lexical matching with synonyms and stems</h3>
-          <p>METEOR relaxes exact matching by also considering synonyms and derived word forms, in addition to penalizing fragmentation of word order.</p>
-          <p>GUTER concentrates the highest values for all models (medians from 0.5 to 0.68), while MATER and PORFAC are more demanding. Qwen2.5-14b FT stays below the rest in all five categories, although the distance shrinks in HISTORIA.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="token-overlap">
-        <figure>
-          <img src="images/box_TokenOverlap.png" alt="Box plot of Token Overlap by document category and model">
-          <div class="figcap">Fig. 8 — Token Overlap by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">Token Overlap</span>
-          <h3>Raw proportion of shared tokens</h3>
-          <p>A simple overlap measure: what fraction of tokens in the generated summary also appears in the reference, without weighting by order or frequency.</p>
-          <p>GUTER is again the category with the highest overlap for the three base models. Qwen2.5-14b FT shows narrower and lower boxes across all categories, with the exception of HISTORIA, where its median approaches that of Qwen3-14b.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ GROUP 2: SEMANTIC ============ -->
-    <section class="group-block">
-      <div class="group-head">
-        <span class="idx">02</span>
-        <h2>Semantic similarity</h2>
-      </div>
-      <p class="group-intro">Unlike the previous group, these metrics compare meaning rather than exact words, using vector representations (embeddings). A summary can fully paraphrase the reference and still score high.</p>
-
-      <div class="metric" id="bert-f1">
-        <figure>
-          <img src="images/box_BERT-F1.png" alt="Box plot of BERTScore-F1 by document category and model">
-          <div class="figcap">Fig. 9 — BERTScore-F1 by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">BERTScore-F1</span>
-          <h3>Balance between semantic precision and recall</h3>
-          <p>Combines precision and recall computed over contextual embeddings, giving a single semantic-similarity score between summary and reference.</p>
-          <p>Here the story changes relative to the lexical group: in HISTORIA, Qwen2.5-14b FT reaches the highest median of the four models (~0.74), and in the remaining categories its box overlaps considerably with those of the base models, although starting from a lower position in EDAES.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="bert-p">
-        <figure>
-          <img src="images/box_BERT-P.png" alt="Box plot of BERTScore-P by document category and model">
-          <div class="figcap">Fig. 10 — BERTScore-P by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">BERTScore-P</span>
-          <h3>Semantic precision</h3>
-          <p>Measures how much of the generated content has semantic support in the reference: it penalizes "invented" or irrelevant content, even if it is well written.</p>
-          <p>Gemma3-12b tends toward the highest precision medians in EDAES and GUTER. Qwen2.5-14b FT is competitive in PORFAC, GUTER and HISTORIA, and in the latter category it even surpasses the median of the other models.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="bert-r">
-        <figure>
-          <img src="images/box_BERT-R.png" alt="Box plot of BERTScore-R by document category and model">
-          <div class="figcap">Fig. 11 — BERTScore-R by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">BERTScore-R</span>
-          <h3>Semantic recall</h3>
-          <p>Complements precision: it measures how much of the reference's semantic content the generated summary manages to cover, even if it uses different words.</p>
-          <p>GUTER concentrates the highest recall values for all models. Qwen2.5-14b FT starts lower in EDAES and MATER, but in HISTORIA its distribution is comparable to those of Gemma3-12b and Granite4-3b.</p>
-        </div>
-      </div>
-
-      <div class="metric" id="semantic-sim">
-        <figure>
-          <img src="images/box_SemanticSim.png" alt="Box plot of Semantic Similarity by document category and model">
-          <div class="figcap">Fig. 12 — Semantic similarity (embeddings) by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">Semantic Similarity</span>
-          <h3>Full-sentence embedding similarity</h3>
-          <p>Cosine similarity between the embedding of the full summary and that of the reference; unlike BERTScore, it compares the text as a single unit rather than token by token.</p>
-          <p>EDAES shows the highest and most consistent values for all four models (medians above 0.85 for the three base models). MATER presents the widest spread in the whole figure, with very tall boxes across all models. Qwen2.5-14b FT stays somewhat below the rest in almost every category, except GUTER, where it comes fairly close.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ GROUP 3: EFFICIENCY ============ -->
-    <section class="group-block">
-      <div class="group-head">
-        <span class="idx">03</span>
-        <h2>Efficiency</h2>
-      </div>
-      <p class="group-intro">Summary quality is only half the story: this section looks at how long each model takes to generate a response.</p>
-
-      <div class="metric" id="response-time">
-        <figure>
-          <img src="images/box_Tiempo_Promedio_s.png" alt="Box plot of response time in seconds by document category and model">
-          <div class="figcap">Fig. 13 — Response time (s) by category and model</div>
-        </figure>
-        <div class="body">
-          <span class="metric-code">Response time (s)</span>
-          <h3>Generation time per summary</h3>
-          <p>Seconds each model takes to produce a complete summary, measured by document category.</p>
-          <p>The difference here is the sharpest of the whole set: Gemma3-12b and Granite4-3b respond in under two seconds across all categories, Qwen3-14b sits in a moderate range (~4–6 seconds), and Qwen2.5-14b FT needs between 20 and 30 seconds on average — an order of magnitude slower than the base models.</p>
-        </div>
-      </div>
-    </section>
-
-  </main>
-</div>
-</body>
+  </body>
 </html>
