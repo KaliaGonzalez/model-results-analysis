@@ -266,31 +266,187 @@
         margin: 0 0 14px;
       }
 
+      /* ---------- mobile top bar + hamburger (hidden on desktop) ---------- */
+      .topbar {
+        display: none;
+      }
+      .backdrop {
+        display: none;
+      }
+
+      .burger {
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line);
+        background: var(--paper-deep);
+        border-radius: 8px;
+        cursor: pointer;
+        padding: 0;
+        flex: none;
+      }
+      .burger span,
+      .burger span::before,
+      .burger span::after {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: var(--ink);
+        border-radius: 2px;
+        transition:
+          transform 0.25s ease,
+          top 0.25s ease,
+          opacity 0.18s ease,
+          background 0.18s ease;
+      }
+      .burger span {
+        position: relative;
+      }
+      .burger span::before,
+      .burger span::after {
+        content: "";
+        position: absolute;
+        left: 0;
+      }
+      .burger span::before {
+        top: -6px;
+      }
+      .burger span::after {
+        top: 6px;
+      }
+      /* animate to X when open */
+      body.nav-open .burger span {
+        background: transparent;
+      }
+      body.nav-open .burger span::before {
+        top: 0;
+        transform: rotate(45deg);
+      }
+      body.nav-open .burger span::after {
+        top: 0;
+        transform: rotate(-45deg);
+      }
+
+      /* ---------- responsive ---------- */
       @media (max-width: 960px) {
         .shell {
           grid-template-columns: 1fr;
         }
-        nav.toc {
-          position: relative;
-          height: auto;
-          border-right: none;
+
+        .topbar {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          position: sticky;
+          top: 0;
+          z-index: 70;
+          padding: 11px 16px;
+          background: var(--paper);
           border-bottom: 1px solid var(--line);
         }
+        .topbar .topbar-title {
+          font-size: 15px;
+          font-weight: 600;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        /* nav becomes an off-canvas drawer */
+        nav.toc {
+          position: fixed;
+          top: 0;
+          left: 0;
+          height: 100vh;
+          height: 100dvh;
+          width: min(86vw, 320px);
+          padding: 74px 22px 40px 26px;
+          border-right: 1px solid var(--line);
+          box-shadow: 6px 0 26px rgba(31, 42, 36, 0.16);
+          transform: translateX(-100%);
+          transition: transform 0.28s ease;
+          z-index: 60;
+        }
+        body.nav-open nav.toc {
+          transform: translateX(0);
+        }
+
+        .backdrop {
+          display: block;
+          position: fixed;
+          inset: 0;
+          background: rgba(31, 42, 36, 0.45);
+          opacity: 0;
+          visibility: hidden;
+          transition:
+            opacity 0.28s ease,
+            visibility 0.28s ease;
+          z-index: 50;
+        }
+        body.nav-open .backdrop {
+          opacity: 1;
+          visibility: visible;
+        }
+        body.nav-open {
+          overflow: hidden;
+        }
+
         main {
-          padding: 40px 24px 100px;
+          padding: 34px 20px 90px;
+        }
+        header.hero h2 {
+          font-size: 32px;
+        }
+        header.hero p {
+          font-size: 16px;
         }
         .metric {
           grid-template-columns: 1fr;
+          gap: 22px;
         }
         .legend-wrap {
           grid-template-columns: 1fr;
+        }
+
+        /* keep anchored sections clear of the sticky top bar */
+        .metric,
+        .group-block {
+          scroll-margin-top: 70px;
+        }
+      }
+
+      @media (max-width: 420px) {
+        main {
+          padding: 26px 15px 80px;
+        }
+        header.hero h2 {
+          font-size: 27px;
+        }
+        .metric img {
+          border: 1px solid var(--line);
         }
       }
     </style>
   </head>
   <body>
+    <div class="topbar">
+      <button
+        class="burger"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="siteNav"
+      >
+        <span></span>
+      </button>
+      <span class="topbar-title">Analysis of Results Across Models</span>
+    </div>
+    <div class="backdrop"></div>
+
     <div class="shell">
-      <nav class="toc">
+      <nav class="toc" id="siteNav">
         <div class="tag">Supplementary material</div>
         <h1>Analysis of Results Across Models</h1>
         <div class="sub">Per-metric results notebook</div>
@@ -329,11 +485,13 @@
             Aerospace Military Doctrinal and Regulatory Questions
           </h1>
           <h3>
-            Kalia González, Juan Diego Ortega-Medina, Nicolás Díaz, Mario
-            Linares-Vasquez, Ruben Manrique, Alexandra Zabala-López Systems and
-            Computing Engineering Department, Universidad de los Andes, Colombia
-            Fuerza Aeroespacial Colombiana, Grupo de Investigación en Estudios
-            Aeroespaciales GIEA, Colombia
+            Kalia González(1), Juan Diego Ortega-Medina (1), Nicolás Díaz(1),
+            Mario Linares-Vásquez(1), Ruben Manrique(1), Alexandra
+            Zabala-López(2) 1Systems and Computing Engineering Department,
+            Universidad de los Andes, Colombia 2Fuerza Aeroespacial Colombiana,
+            Grupo de Investigaci´on en Estudios Aeroespaciales GIEA, Colombia
+            {k.gonzalezj, j.ortegam, n.diaz9, m.linaresv,
+            rf.manrique}@uniandes.edu.co, alexandra.zabala@fac.mil.co
           </h3>
           <p>
             This page accompanies the article and gathers, in a single place,
@@ -750,5 +908,44 @@
         </section>
       </main>
     </div>
+
+    <script>
+      (function () {
+        var body = document.body;
+        var burger = document.querySelector(".burger");
+        var nav = document.getElementById("siteNav");
+        var backdrop = document.querySelector(".backdrop");
+
+        function openMenu() {
+          body.classList.add("nav-open");
+          burger.setAttribute("aria-expanded", "true");
+        }
+        function closeMenu() {
+          body.classList.remove("nav-open");
+          burger.setAttribute("aria-expanded", "false");
+        }
+        function toggleMenu() {
+          body.classList.contains("nav-open") ? closeMenu() : openMenu();
+        }
+
+        burger.addEventListener("click", toggleMenu);
+        backdrop.addEventListener("click", closeMenu);
+
+        // close after tapping a section link
+        nav.addEventListener("click", function (e) {
+          if (e.target.closest("a")) closeMenu();
+        });
+
+        // Escape closes
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeMenu();
+        });
+
+        // reset state if the viewport grows back to desktop
+        window.addEventListener("resize", function () {
+          if (window.innerWidth > 960) closeMenu();
+        });
+      })();
+    </script>
   </body>
 </html>
