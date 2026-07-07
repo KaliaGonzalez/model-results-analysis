@@ -245,6 +245,33 @@
         margin: 14px 0 40px;
       }
 
+      /* ---------- architecture figure ---------- */
+      .architecture-block {
+        margin-bottom: 70px;
+      }
+      .architecture-block h2 {
+        font-size: 22px;
+        margin: 0 0 8px;
+      }
+      .architecture-block .group-intro {
+        margin-bottom: 22px;
+      }
+      .architecture-figure {
+        margin: 0;
+      }
+      .architecture-figure img {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: #fff;
+        display: block;
+      }
+      .architecture-figure .figcap {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11.5px;
+        color: var(--ink-soft);
+        margin-top: 8px;
+      }
+
       /* ---------- metric card ---------- */
       .metric {
         display: grid;
@@ -476,6 +503,11 @@
         <div class="sub">Per-metric results notebook</div>
 
         <div class="grp">
+          <div class="grp-title">Architecture</div>
+          <a href="#fine-tuning-architecture">Fine Tuning Architecture</a>
+        </div>
+
+        <div class="grp">
           <div class="grp-title">Lexical overlap</div>
           <a href="#bleu-1">BLEU-1</a>
           <a href="#bleu-2">BLEU-2</a>
@@ -559,6 +591,23 @@
           </div>
         </section>
 
+        <!-- ============ FINE TUNING ARCHITECTURE ============ -->
+        <section class="architecture-block" id="fine-tuning-architecture">
+          <h2>Fine Tuning Architecture</h2>
+          <p class="group-intro">
+            Overview of the end-to-end pipeline used to fine tune Qwen2.5-14b,
+            from PDF data collection through LoRA training to answer
+            generation in the final application.
+          </p>
+          <figure class="architecture-figure">
+            <img
+              src="images/fine_tuning_architecture.png"
+              alt="Diagram of the Fine Tuning architecture: data collection, data preparation, model training with LoRA, evaluation and optimization, and fine tuning answer generation"
+            />
+            <div class="figcap">Fig. 1 — Fine Tuning architecture</div>
+          </figure>
+        </section>
+
         <!-- ============ GROUP 1: LEXICAL ============ -->
         <section class="group-block">
           <div class="group-head">
@@ -578,7 +627,7 @@
                 src="images/box_BLEU-1.png"
                 alt="Box plot of BLEU-1 by document category and model"
               />
-              <div class="figcap">Fig. 1 — BLEU-1 by category and model</div>
+              <div class="figcap">Fig. 2 — BLEU-1 by category and model</div>
             </figure>
             <div class="body">
               <span class="metric-code">BLEU-1</span>
@@ -603,7 +652,7 @@
                 src="images/box_BLEU-2.png"
                 alt="Box plot of BLEU-2 by document category and model"
               />
-              <div class="figcap">Fig. 2 — BLEU-2 by category and model</div>
+              <div class="figcap">Fig. 3 — BLEU-2 by category and model</div>
             </figure>
             <div class="body">
               <span class="metric-code">BLEU-2</span>
@@ -628,7 +677,7 @@
                 src="images/box_BLEU-4.png"
                 alt="Box plot of BLEU-4 by document category and model"
               />
-              <div class="figcap">Fig. 3 — BLEU-4 by category and model</div>
+              <div class="figcap">Fig. 4 — BLEU-4 by category and model</div>
             </figure>
             <div class="body">
               <span class="metric-code">BLEU-4</span>
@@ -653,7 +702,7 @@
                 src="images/box_ROUGE-1.png"
                 alt="Box plot of ROUGE-1 by document category and model"
               />
-              <div class="figcap">Fig. 4 — ROUGE-1 by category and model</div>
+              <div class="figcap">Fig. 5 — ROUGE-1 by category and model</div>
             </figure>
             <div class="body">
               <span class="metric-code">ROUGE-1</span>
@@ -678,7 +727,7 @@
                 src="images/box_ROUGE-2.png"
                 alt="Box plot of ROUGE-2 by document category and model"
               />
-              <div class="figcap">Fig. 5 — ROUGE-2 by category and model</div>
+              <div class="figcap">Fig. 6 — ROUGE-2 by category and model</div>
             </figure>
             <div class="body">
               <span class="metric-code">ROUGE-2</span>
@@ -702,7 +751,7 @@
                 src="images/box_ROUGE-L.png"
                 alt="Box plot of ROUGE-L by document category and model"
               />
-              <div class="figcap">Fig. 6 — ROUGE-L by category and model</div>
+              <div class="figcap">Fig. 7 — ROUGE-L by category and model</div>
             </figure>
             <div class="body">
               <span class="metric-code">ROUGE-L</span>
@@ -727,7 +776,7 @@
                 src="images/box_METEOR.png"
                 alt="Box plot of METEOR by document category and model"
               />
-              <div class="figcap">Fig. 7 — METEOR by category and model</div>
+              <div class="figcap">Fig. 8 — METEOR by category and model</div>
             </figure>
             <div class="body">
               <span class="metric-code">METEOR</span>
@@ -753,7 +802,7 @@
                 alt="Box plot of Token Overlap by document category and model"
               />
               <div class="figcap">
-                Fig. 8 — Token Overlap by category and model
+                Fig. 9 — Token Overlap by category and model
               </div>
             </figure>
             <div class="body">
@@ -793,7 +842,7 @@
                 alt="Box plot of BERTScore-F1 by document category and model"
               />
               <div class="figcap">
-                Fig. 9 — BERTScore-F1 by category and model
+                Fig. 10 — BERTScore-F1 by category and model
               </div>
             </figure>
             <div class="body">
@@ -821,7 +870,7 @@
                 alt="Box plot of BERTScore-P by document category and model"
               />
               <div class="figcap">
-                Fig. 10 — BERTScore-P by category and model
+                Fig. 11 — BERTScore-P by category and model
               </div>
             </figure>
             <div class="body">
@@ -848,7 +897,7 @@
                 alt="Box plot of BERTScore-R by document category and model"
               />
               <div class="figcap">
-                Fig. 11 — BERTScore-R by category and model
+                Fig. 12 — BERTScore-R by category and model
               </div>
             </figure>
             <div class="body">
@@ -875,7 +924,7 @@
                 alt="Box plot of Semantic Similarity by document category and model"
               />
               <div class="figcap">
-                Fig. 12 — Semantic similarity (embeddings) by category and model
+                Fig. 13 — Semantic similarity (embeddings) by category and model
               </div>
             </figure>
             <div class="body">
@@ -916,7 +965,7 @@
                 alt="Box plot of response time in seconds by document category and model"
               />
               <div class="figcap">
-                Fig. 13 — Response time (s) by category and model
+                Fig. 14 — Response time (s) by category and model
               </div>
             </figure>
             <div class="body">
