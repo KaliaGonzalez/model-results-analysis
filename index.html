@@ -272,6 +272,72 @@
         margin-top: 8px;
       }
 
+      /* ---------- perfect-score cases ---------- */
+      .case-card {
+        background: var(--paper-deep);
+        border: 1px solid var(--line);
+        padding: 22px 24px;
+        margin-bottom: 22px;
+      }
+      .case-card:last-child {
+        margin-bottom: 0;
+      }
+      .case-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .case-meta span {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--teal-deep);
+        background: rgba(47, 111, 98, 0.1);
+        border: 1px solid var(--line);
+        padding: 4px 9px;
+        border-radius: 3px;
+      }
+      .case-card .question {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 12px;
+        color: var(--ink);
+      }
+      .case-answers {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      .case-answer .label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--ink-soft);
+        display: block;
+        margin-bottom: 4px;
+      }
+      .case-answer p {
+        font-size: 15px;
+        margin: 0;
+        color: var(--ink);
+      }
+      .case-answer.gold {
+        border-left: 3px solid var(--gold);
+        padding-left: 12px;
+      }
+      .case-answer.model {
+        border-left: 3px solid var(--teal);
+        padding-left: 12px;
+      }
+      @media (max-width: 640px) {
+        .case-answers {
+          grid-template-columns: 1fr;
+        }
+      }
+
       /* ---------- metric card ---------- */
       .metric {
         display: grid;
@@ -530,6 +596,11 @@
         <div class="grp">
           <div class="grp-title">Efficiency</div>
           <a href="#response-time">Response time</a>
+        </div>
+
+        <div class="grp">
+          <div class="grp-title">Qualitative examples</div>
+          <a href="#perfect-cases">Perfect-score cases</a>
         </div>
       </nav>
 
@@ -982,6 +1053,90 @@
                 and Qwen2.5-14b FT needs between 20 and 30 seconds on average —
                 an order of magnitude slower than the base models.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ GROUP 4: PERFECT-SCORE CASES ============ -->
+        <section class="group-block" id="perfect-cases">
+          <div class="group-head">
+            <span class="idx">04</span>
+            <h2>Cases Where the Model Achieved Perfect Metrics</h2>
+          </div>
+          <p class="group-intro">
+            Beyond the aggregate distributions, it is worth looking at
+            instances where the generated answer matched the gold-set
+            reference almost exactly, driving metric scores close to 1.
+            Seven such instances were found across two documents. In three of
+            them, the same question was answered correctly at three different
+            sampling temperatures (0.0, 0.2, and 0.4), and in the remaining
+            four, two different questions were each answered correctly at two
+            temperatures (0.0 and 0.2).
+          </p>
+
+          <div class="case-card">
+            <div class="case-meta">
+              <span>Document: PORFAC</span>
+              <span>Temperatures: 0.0, 0.2, 0.4</span>
+              <span>3 instances</span>
+            </div>
+            <p class="question">
+              According to Paragraph 1 of Article 6, Chapter I, Title III, who
+              selects the candidates for the training course?
+            </p>
+            <div class="case-answers">
+              <div class="case-answer gold">
+                <span class="label">Gold-set answer</span>
+                <p>The General Command of the Military Forces.</p>
+              </div>
+              <div class="case-answer model">
+                <span class="label">Model answer</span>
+                <p>The General Command of the Military Forces.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-card">
+            <div class="case-meta">
+              <span>Document: HISTORIA</span>
+              <span>Temperatures: 0.0, 0.2</span>
+              <span>2 instances</span>
+            </div>
+            <p class="question">
+              In which 2012 international exercise did the FAC participate as
+              a regional reference?
+            </p>
+            <div class="case-answers">
+              <div class="case-answer gold">
+                <span class="label">Gold-set answer</span>
+                <p>In the Red Flag exercise.</p>
+              </div>
+              <div class="case-answer model">
+                <span class="label">Model answer</span>
+                <p>Red Flag Alaska Exercise.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-card">
+            <div class="case-meta">
+              <span>Document: HISTORIA</span>
+              <span>Temperatures: 0.0, 0.2</span>
+              <span>2 instances</span>
+            </div>
+            <p class="question">
+              Which article of the 1991 Constitution defines the purpose of
+              the Military Forces?
+            </p>
+            <div class="case-answers">
+              <div class="case-answer gold">
+                <span class="label">Gold-set answer</span>
+                <p>Article 217.</p>
+              </div>
+              <div class="case-answer model">
+                <span class="label">Model answer</span>
+                <p>Article 217.</p>
+              </div>
             </div>
           </div>
         </section>
