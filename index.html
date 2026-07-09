@@ -628,11 +628,12 @@
           </div>
           <p>
             This page accompanies the article and gathers, in a single place,
-            the 13 metrics used to compare the four evaluated models. Each chart
-            is a box plot showing the distribution of results per document
-            category. Below each figure is a short reading of what can be
-            observed — not a statistical verdict, but a guide to interpreting
-            the plot.
+            the 13 metrics used to compare the four evaluated models. Gemma3-12b
+            , Granite 4-3b and Qwen3-14b are from the RAG and BM25 algorithm.
+            And Qwen2.5-14b is the fine-tuned model. Each chart is a box plot
+            showing the distribution of results per document category. Below
+            each figure is a short reading of what can be observed — not a
+            statistical verdict, but a guide to interpreting the plot.
           </p>
         </header>
 
@@ -640,12 +641,18 @@
           <div class="legend-card">
             <h3>Compared models</h3>
             <ul>
-              <li><span class="swatch s-blue"></span> Gemma3-12b</li>
-              <li><span class="swatch s-orange"></span> Granite4-3b</li>
+              <li>
+                <span class="swatch s-blue"></span> Gemma3-12b (RAG+BM25
+                Algorithm)
+              </li>
+              <li>
+                <span class="swatch s-orange"></span> Granite4-3b (RAG+BM25
+                Algorithm)
+              </li>
               <li><span class="swatch s-green"></span> Qwen3-14b</li>
               <li>
-                <span class="swatch s-purple"></span> Qwen2.5-14b FT
-                (instruction-tuned)
+                <span class="swatch s-purple"></span> Qwen2.5-14b Fine Tuned
+                model
               </li>
             </ul>
           </div>
@@ -667,8 +674,8 @@
           <h2>Fine Tuning Architecture</h2>
           <p class="group-intro">
             Overview of the end-to-end pipeline used to fine tune Qwen2.5-14b,
-            from PDF data collection through LoRA training to answer
-            generation in the final application.
+            from PDF data collection through LoRA training to answer generation
+            in the final application.
           </p>
           <figure class="architecture-figure">
             <img
@@ -1064,14 +1071,13 @@
             <h2>Cases Where the Model Achieved Perfect Metrics</h2>
           </div>
           <p class="group-intro">
-            Beyond the aggregate distributions, it is worth looking at
-            instances where the generated answer matched the gold-set
-            reference almost exactly, driving metric scores close to 1.
-            Seven such instances were found across two documents. In three of
-            them, the same question was answered correctly at three different
-            sampling temperatures (0.0, 0.2, and 0.4), and in the remaining
-            four, two different questions were each answered correctly at two
-            temperatures (0.0 and 0.2).
+            Beyond the aggregate distributions, it is worth looking at instances
+            where the generated answer matched the gold-set reference almost
+            exactly, driving metric scores close to 1. Seven such instances were
+            found across two documents. In three of them, the same question was
+            answered correctly at three different sampling temperatures (0.0,
+            0.2, and 0.4), and in the remaining four, two different questions
+            were each answered correctly at two temperatures (0.0 and 0.2).
           </p>
 
           <div class="case-card">
@@ -1103,8 +1109,8 @@
               <span>2 instances</span>
             </div>
             <p class="question">
-              In which 2012 international exercise did the FAC participate as
-              a regional reference?
+              In which 2012 international exercise did the FAC participate as a
+              regional reference?
             </p>
             <div class="case-answers">
               <div class="case-answer gold">
@@ -1125,8 +1131,8 @@
               <span>2 instances</span>
             </div>
             <p class="question">
-              Which article of the 1991 Constitution defines the purpose of
-              the Military Forces?
+              Which article of the 1991 Constitution defines the purpose of the
+              Military Forces?
             </p>
             <div class="case-answers">
               <div class="case-answer gold">
